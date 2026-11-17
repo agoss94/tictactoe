@@ -1,5 +1,5 @@
-from constants import EMPTY, CROSS, CIRCLE, WINNING_LINES, LABELS
-from errors import InvalidSymbolError, InvalidStateError
+from src.constants import EMPTY, CROSS, CIRCLE, WINNING_LINES, LABELS
+from src.errors import InvalidSymbolError, InvalidStateError
 
 class Board:
 
@@ -16,6 +16,8 @@ class Board:
     def set(self, index, symbol):
         if symbol not in (CROSS, CIRCLE):
             raise InvalidSymbolError("Can only set CROSS or CIRCLE")
+        if not 0 <= index < len(self.board):
+            raise IndexError("The number must be between 0-8")
         if self.board[index] != EMPTY:
             raise InvalidStateError("Cannot set on a non-empty field")
         return Board(self.board[:index] + (symbol,) + self.board[index + 1:])

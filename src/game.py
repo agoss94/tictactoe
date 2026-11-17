@@ -1,7 +1,7 @@
-from board import Board
-from constants import EMPTY, CROSS, CIRCLE
-from errors import InvalidStateError
-from player import Player
+from src.board import Board
+from src.constants import CROSS, CIRCLE
+from src.errors import InvalidStateError
+from src.player import Player
 
 
 class Game:
@@ -12,11 +12,14 @@ class Game:
         self.current_player = CROSS
 
     def turn(self):
-        if self.board.winner() != EMPTY:
+        if self.board.game_over():
             raise InvalidStateError("Cannot make a turn")
         player = self.players[self.current_player]
         self.board = player.move(self.board)
         self.current_player *= -1
+
+    def game_over(self):
+        return self.board.game_over()
 
 
 

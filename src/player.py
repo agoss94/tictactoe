@@ -1,4 +1,4 @@
-from errors import InvalidStateError
+from src.errors import InvalidStateError
 
 class Player:
 
