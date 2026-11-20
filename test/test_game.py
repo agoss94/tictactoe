@@ -44,17 +44,21 @@ def test_turn_uses_each_player_in_order_and_updates_the_board():
     assert player_o.boards_seen == [first_board]
 
 
-@pytest.mark.parametrize(
-    "cells",
-    [
-        (CROSS, CROSS, CROSS, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY),
-        (CROSS, CIRCLE, CROSS, CROSS, CIRCLE, CIRCLE, CIRCLE, CROSS, CROSS),
-    ],
-)
-def test_turn_rejects_a_finished_game(cells):
+def test_turn_rejects_a_won_game():
     player = FixedMovePlayer(3, CROSS)
     game = Game(player, FixedMovePlayer(4, CIRCLE))
-    game.board = Board(cells)
+    game.board = Board((CROSS, CROSS, CROSS, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY))
+
+    with pytest.raises(InvalidStateError):
+        game.turn()
+
+    assert player.boards_seen == []
+
+
+def test_turn_rejects_a_drawn_game():
+    player = FixedMovePlayer(3, CROSS)
+    game = Game(player, FixedMovePlayer(4, CIRCLE))
+    game.board = Board((CROSS, CIRCLE, CROSS, CROSS, CIRCLE, CIRCLE, CIRCLE, CROSS, CROSS))
 
     with pytest.raises(InvalidStateError):
         game.turn()

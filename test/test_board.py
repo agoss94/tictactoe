@@ -97,10 +97,19 @@ def test_set_returns_a_new_board_without_changing_the_original():
     assert len(changed.board) == 9
 
 
-@pytest.mark.parametrize("symbol", [EMPTY, 2, "X"])
-def test_set_rejects_invalid_symbols(symbol):
+def test_set_rejects_empty_symbol():
     with pytest.raises(InvalidSymbolError):
-        Board().set(0, symbol)
+        Board().set(0, EMPTY)
+
+
+def test_set_rejects_unknown_numeric_symbol():
+    with pytest.raises(InvalidSymbolError):
+        Board().set(0, 2)
+
+
+def test_set_rejects_string_symbol():
+    with pytest.raises(InvalidSymbolError):
+        Board().set(0, "X")
 
 
 def test_set_rejects_occupied_field():
@@ -110,21 +119,24 @@ def test_set_rejects_occupied_field():
         board.set(0, CIRCLE)
 
 
-@pytest.mark.parametrize("index", [-1, 9])
-def test_set_rejects_out_of_range_fields(index):
+def test_set_rejects_negative_field_index():
     with pytest.raises(IndexError):
-        Board().set(index, CROSS)
+        Board().set(-1, CROSS)
 
 
-@pytest.mark.parametrize(
-    ("cells", "expected"),
-    [
-        ((CROSS, CROSS, CROSS, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), CROSS),
-        ((CIRCLE, CROSS, EMPTY, CIRCLE, CROSS, EMPTY, CIRCLE, EMPTY, EMPTY), CIRCLE),
-    ],
-)
-def test_winner_returns_the_winning_symbol(cells, expected):
-    assert Board(cells).winner() == expected
+def test_set_rejects_field_index_past_the_board():
+    with pytest.raises(IndexError):
+        Board().set(9, CROSS)
+
+
+def test_winner_returns_cross_for_a_cross_win():
+    cells = (CROSS, CROSS, CROSS, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
+    assert Board(cells).winner() == CROSS
+
+
+def test_winner_returns_circle_for_a_circle_win():
+    cells = (CIRCLE, CROSS, EMPTY, CIRCLE, CROSS, EMPTY, CIRCLE, EMPTY, EMPTY)
+    assert Board(cells).winner() == CIRCLE
 
 
 def test_game_over_for_open_won_and_drawn_boards():

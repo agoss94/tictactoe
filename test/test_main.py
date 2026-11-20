@@ -1,16 +1,8 @@
-import pytest
-
 from src.main import run
 
 
-@pytest.mark.parametrize(
-    ("moves", "ending"),
-    [
-        ([0, 3, 1, 4, 2], "Congrats the player X won the game!"),
-        ([0, 1, 2, 4, 3, 5, 7, 6, 8], "The game ended in a draw!"),
-    ],
-)
-def test_run_completes_a_game(monkeypatch, capsys, moves, ending):
+def test_run_completes_with_cross_winning(monkeypatch, capsys):
+    moves = [0, 3, 1, 4, 2]
     answers = iter(map(str, moves))
     monkeypatch.setattr("builtins.input", lambda prompt: next(answers))
 
@@ -18,4 +10,16 @@ def test_run_completes_a_game(monkeypatch, capsys, moves, ending):
 
     output = capsys.readouterr().out
     assert "Welcome to:" in output
-    assert ending in output
+    assert "Congrats the player X won the game!" in output
+
+
+def test_run_completes_with_a_draw(monkeypatch, capsys):
+    moves = [0, 1, 2, 4, 3, 5, 7, 6, 8]
+    answers = iter(map(str, moves))
+    monkeypatch.setattr("builtins.input", lambda prompt: next(answers))
+
+    run()
+
+    output = capsys.readouterr().out
+    assert "Welcome to:" in output
+    assert "The game ended in a draw!" in output
