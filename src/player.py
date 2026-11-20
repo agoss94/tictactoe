@@ -18,3 +18,6 @@ class Player:
                 continue
             except IndexError:
                 print("The number must be between 0-8")
+
+    def learn(self, winner):
+        pass
