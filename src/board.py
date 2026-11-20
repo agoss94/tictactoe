@@ -28,6 +28,26 @@ class Board:
     def game_over(self):
         return self.winner() != EMPTY or self.empty_fields() == set()
 
+    # 0, 1, 2
+    # 3, 4, 5
+    # 6, 7, 8
+
+    def rotate(self):
+        p = self.board
+        return Board((
+            p[6], p[3], p[0],
+            p[7], p[4], p[1],
+            p[8], p[5], p[2],
+        ))
+
+    def reflect(self):
+        p = self.board
+        return Board((
+            p[2], p[1], p[0],
+            p[5], p[4], p[3],
+            p[8], p[7], p[6],
+        ))
+
     def __eq__(self, value):
         if not isinstance(value, Board):
             return False

@@ -21,5 +21,8 @@ class Game:
     def game_over(self):
         return self.board.game_over()
 
+    def winner(self):
+        return self.board.winner()
+
 
 

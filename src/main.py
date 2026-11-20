@@ -1,5 +1,4 @@
-from src.constants import CIRCLE
-from src.constants import EMPTY, LABELS
+from src.constants import EMPTY, LABELS, CIRCLE, CROSS
 from src.game import Game
 from src.player import Player
 from src.menace import Menace
@@ -13,6 +12,25 @@ def ask_play_against_menace():
         if answer in ("", "n", "no"):
             return False
         print("Please enter y or n.")
+
+def train_menace():
+    while True:
+        try:
+            training_games = int(input("How many games should menace train? "))
+            index = 0
+            menace_x = Menace(CROSS)
+            menace_o = Menace(CIRCLE)
+            while index < training_games:
+                game = Game(menace_x, menace_o)
+                while not game.game_over():
+                    game.turn()
+                menace_o.learn(game.winner())
+                menace_x.learn(game.winner())
+                index += 1
+            return menace_x
+        except ValueError:
+            print("Invalid number close program")
+
 
 
 def run():
@@ -28,7 +46,8 @@ def run():
     """)
 
     if ask_play_against_menace():
-        game = Game(player_o=Player(CIRCLE), player_x=Menace())
+        menace = train_menace()
+        game = Game(player_o=Player(CIRCLE), player_x=menace)
     else:
         game = Game()
 

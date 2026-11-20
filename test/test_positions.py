@@ -1,5 +1,6 @@
 from src.constants import EMPTY, CROSS, CIRCLE
 from src.positions import all_positions
+from src.symmetry import canonical
 from src.board import Board
 
 def test_all_positions_len():
@@ -23,3 +24,7 @@ def test_next_moves():
         CROSS, CROSS, CIRCLE,
         CIRCLE, CIRCLE, CROSS
     ))}
+
+def test_all_positions_canonical():
+    positions = all_positions(canonical)
+    assert len(positions) == 765
