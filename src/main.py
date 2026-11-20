@@ -4,6 +4,17 @@ from src.game import Game
 from src.player import Player
 from src.menace import Menace
 
+
+def ask_play_against_menace():
+    while True:
+        answer = input("Play against MENACE? [y] Yes / [n] No (default): ").strip().lower()
+        if answer in ("y", "yes"):
+            return True
+        if answer in ("", "n", "no"):
+            return False
+        print("Please enter y or n.")
+
+
 def run():
     print("Welcome to:")
     print("""
@@ -16,11 +27,10 @@ def run():
    ▀▀      ▀▀▀▀▀▀      ▀▀▀▀                ▀▀     ▀▀    ▀▀     ▀▀▀▀                ▀▀       ▀▀▀▀    ▀▀▀▀▀▀▀▀ 
     """)
 
-    answer = input("Do you want to play against menace? [y, N]")
-    if answer == "":
-        game = Game()
-    else:
+    if ask_play_against_menace():
         game = Game(player_o=Player(CIRCLE), player_x=Menace())
+    else:
+        game = Game()
 
     while not game.game_over():
         print(game.board)
