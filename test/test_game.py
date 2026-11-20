@@ -64,3 +64,37 @@ def test_turn_rejects_a_drawn_game():
         game.turn()
 
     assert player.boards_seen == []
+
+def test_eq():
+    board1 = Board((
+        CROSS, EMPTY, CIRCLE,
+        CROSS, EMPTY, CROSS,
+        EMPTY, EMPTY, EMPTY
+    ))
+    board2 = Board((
+        CROSS, EMPTY, CIRCLE,
+        CROSS, EMPTY, CROSS,
+        EMPTY, EMPTY, EMPTY
+    ))
+
+    assert board1 == board2
+    assert board1.__hash__() == board2.__hash__()
+
+def test_not_eq():
+
+    board1 = Board((
+        EMPTY, EMPTY, CIRCLE,
+        CROSS, EMPTY, CROSS,
+        EMPTY, EMPTY, EMPTY
+    ))
+    board2 = Board((
+        CROSS, EMPTY, CIRCLE,
+        CROSS, EMPTY, CROSS,
+        EMPTY, EMPTY, EMPTY
+    ))
+
+    assert board1 != board2
+    assert (1,2, 3) != board2
+
+
+

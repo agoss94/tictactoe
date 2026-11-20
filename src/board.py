@@ -28,6 +28,14 @@ class Board:
     def game_over(self):
         return self.winner() != EMPTY or self.empty_fields() == set()
 
+    def __eq__(self, value):
+        if not isinstance(value, Board):
+            return False
+        return self.board == value.board
+
+    def __hash__(self):
+        return self.board.__hash__()
+
     def __str__(self):
         p = self.board
         return f"""
